@@ -1,7 +1,7 @@
 INSERT INTO Member (name, sex, email, mainSkillId, status)
 VALUES ('Berlin', 'M', 'berlin@gmail.com', 1, 'AVAILABLE');
 INSERT INTO Member (name, sex, email, mainSkillId, status)
-VALUES ('Denver', 'M', 'denver@gmail.com', 2, 'AVAILABLE');
+VALUES ('Denver', 'M', 'denver@gmail.com', 3, 'AVAILABLE');
 
 INSERT INTO Skill (name)
 VALUES ('leadership');
