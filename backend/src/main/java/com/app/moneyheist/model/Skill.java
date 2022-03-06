@@ -13,10 +13,11 @@ import java.util.Set;
 @Setter
 public class Skill {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Setter(AccessLevel.NONE)
     private Long id;
 
+    @Column(unique = true)
     private String name;
 
     @OneToMany(mappedBy = "skill", cascade = CascadeType.ALL)

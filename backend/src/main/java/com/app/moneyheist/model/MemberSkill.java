@@ -11,7 +11,7 @@ import javax.persistence.*;
 @Setter
 public class MemberSkill {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Setter(AccessLevel.NONE)
     private Long id;
 

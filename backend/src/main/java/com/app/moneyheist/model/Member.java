@@ -13,7 +13,7 @@ import java.util.Set;
 @Setter
 public class Member {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Setter(AccessLevel.NONE)
     private Long id;
 
@@ -29,7 +29,7 @@ public class Member {
 
     @OneToOne
     @JoinColumn(name = "mainSkillId", referencedColumnName = "id")
-    private MemberSkill mainSkill;
+    private Skill mainSkill;
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private Set<MemberSkill> memberSkills = new HashSet<>();

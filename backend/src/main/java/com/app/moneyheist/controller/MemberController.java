@@ -2,14 +2,11 @@ package com.app.moneyheist.controller;
 
 import com.app.moneyheist.dto.MemberDto;
 import com.app.moneyheist.facade.MemberFacade;
+import com.app.moneyheist.form.MemberForm;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.Objects;
+import javax.validation.Valid;
 import java.util.Set;
 
 @RestController
@@ -22,17 +19,24 @@ public class MemberController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<MemberDto> get(@PathVariable Long id) {
-        MemberDto dto = memberFacade.get(id);
-
-        if (Objects.isNull(dto))
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-
-        return new ResponseEntity<>(dto, HttpStatus.OK);
+    public MemberDto get(@PathVariable final Long id) {
+        return memberFacade.get(id);
     }
 
     @GetMapping
     public Set<MemberDto> getAll() {
         return memberFacade.getAll();
+    }
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public void create(@Valid @RequestBody final MemberForm memberForm) {
+        memberFacade.create(memberForm);
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable final Long id) {
+        memberFacade.delete(id);
     }
 }

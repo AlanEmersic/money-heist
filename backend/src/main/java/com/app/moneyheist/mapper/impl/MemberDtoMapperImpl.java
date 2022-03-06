@@ -26,7 +26,7 @@ public class MemberDtoMapperImpl implements MemberDtoMapper {
             return null;
 
         return new MemberDto(member.getId(), member.getName(), member.getSex(), member.getEmail(), member.getStatus(),
-                skillDtoMapper.map(member.getMainSkill().getSkill()),
+                skillDtoMapper.map(member.getMainSkill()),
                 member.getMemberSkills().stream().map(memberSkillDtoMapper::map).collect(Collectors.toSet()));
     }
 }

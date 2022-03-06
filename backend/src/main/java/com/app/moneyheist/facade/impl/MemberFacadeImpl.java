@@ -1,11 +1,16 @@
 package com.app.moneyheist.facade.impl;
 
 import com.app.moneyheist.dto.MemberDto;
+import com.app.moneyheist.exception.ApiNotFoundException;
 import com.app.moneyheist.facade.MemberFacade;
+import com.app.moneyheist.form.MemberForm;
 import com.app.moneyheist.mapper.MemberDtoMapper;
+import com.app.moneyheist.mapper.MemberFormMapper;
 import com.app.moneyheist.service.MemberService;
+import com.app.moneyheist.validator.MemberFormValidator;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -13,19 +18,34 @@ import java.util.stream.Collectors;
 public class MemberFacadeImpl implements MemberFacade {
     private final MemberService memberService;
     private final MemberDtoMapper memberDtoMapper;
+    private final MemberFormValidator memberFormValidator;
+    private final MemberFormMapper memberFormMapper;
 
-    public MemberFacadeImpl(MemberService memberService, MemberDtoMapper memberDtoMapper) {
+    public MemberFacadeImpl(MemberService memberService, MemberDtoMapper memberDtoMapper, MemberFormValidator memberFormValidator, MemberFormMapper memberFormMapper) {
         this.memberService = memberService;
         this.memberDtoMapper = memberDtoMapper;
+        this.memberFormValidator = memberFormValidator;
+        this.memberFormMapper = memberFormMapper;
     }
 
     @Override
     public MemberDto get(Long id) {
-        return memberDtoMapper.map(memberService.get(id));
+        return Optional.ofNullable(memberDtoMapper.map(memberService.get(id))).orElseThrow(() -> new ApiNotFoundException("Member not found with id " + id));
     }
 
     @Override
     public Set<MemberDto> getAll() {
         return memberService.getAll().stream().map(memberDtoMapper::map).collect(Collectors.toSet());
+    }
+
+    @Override
+    public void create(MemberForm memberForm) {
+        memberFormValidator.validateCreate(memberForm);
+        memberService.save(memberFormMapper.map(memberForm));
+    }
+
+    @Override
+    public void delete(Long id) {
+        memberService.delete(Optional.ofNullable(memberService.get(id)).orElseThrow(() -> new ApiNotFoundException("Member not found with id " + id)));
     }
 }

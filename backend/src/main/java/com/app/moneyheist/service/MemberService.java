@@ -9,4 +9,8 @@ public interface MemberService {
     Member get(Long id);
 
     Set<Member> getAll();
+
+    void save(Member member);
+
+    void delete(Member member);
 }
