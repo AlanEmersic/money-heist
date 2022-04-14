@@ -27,10 +27,10 @@ public class Member {
     @Enumerated(EnumType.STRING)
     private Status status;
 
-    @OneToOne
-    @JoinColumn(name = "mainSkillId", referencedColumnName = "id")
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "mainSkillId")
     private Skill mainSkill;
 
-    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<MemberSkill> memberSkills = new HashSet<>();
 }

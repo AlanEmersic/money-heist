@@ -20,6 +20,6 @@ public class Skill {
     @Column(unique = true)
     private String name;
 
-    @OneToMany(mappedBy = "skill", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "skill", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<MemberSkill> memberSkills = new HashSet<>();
 }

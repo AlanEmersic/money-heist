@@ -1,10 +1,8 @@
 package com.app.moneyheist.service.impl;
 
 import com.app.moneyheist.model.Member;
-import com.app.moneyheist.model.Skill;
 import com.app.moneyheist.repository.MemberRepository;
 import com.app.moneyheist.repository.MemberSkillRepository;
-import com.app.moneyheist.repository.SkillRepository;
 import com.app.moneyheist.service.MemberService;
 import org.springframework.stereotype.Service;
 
@@ -16,12 +14,10 @@ import java.util.Set;
 public class MemberServiceImpl implements MemberService {
     private final MemberRepository memberRepository;
     private final MemberSkillRepository memberSkillRepository;
-    private final SkillRepository skillRepository;
 
-    public MemberServiceImpl(MemberRepository memberRepository, MemberSkillRepository memberSkillRepository, SkillRepository skillRepository) {
+    public MemberServiceImpl(MemberRepository memberRepository, MemberSkillRepository memberSkillRepository) {
         this.memberRepository = memberRepository;
         this.memberSkillRepository = memberSkillRepository;
-        this.skillRepository = skillRepository;
     }
 
     @Override
@@ -37,8 +33,6 @@ public class MemberServiceImpl implements MemberService {
     @Override
     @Transactional
     public void save(Member member) {
-        Skill mainSkill = skillRepository.findByNameIgnoreCase(member.getMainSkill().getName());
-        member.setMainSkill(mainSkill);
         memberRepository.save(member);
 
         member.getMemberSkills().forEach(memberSkill -> {
@@ -51,5 +45,4 @@ public class MemberServiceImpl implements MemberService {
     public void delete(Member member) {
         memberRepository.delete(member);
     }
-
 }
