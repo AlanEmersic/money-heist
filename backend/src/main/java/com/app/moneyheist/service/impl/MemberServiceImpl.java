@@ -26,6 +26,11 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
+    public Member getByName(String name) {
+        return memberRepository.findByNameIgnoreCase(name);
+    }
+
+    @Override
     public Set<Member> getAll() {
         return new HashSet<>(memberRepository.findAll());
     }

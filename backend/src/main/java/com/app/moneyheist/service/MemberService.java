@@ -8,6 +8,8 @@ public interface MemberService {
 
     Member get(Long id);
 
+    Member getByName(String name);
+
     Set<Member> getAll();
 
     void save(Member member);

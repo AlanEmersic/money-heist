@@ -3,9 +3,8 @@ package com.app.moneyheist.validator.impl;
 import com.app.moneyheist.exception.MemberValidationException;
 import com.app.moneyheist.form.MemberForm;
 import com.app.moneyheist.form.MemberSkillForm;
-import com.app.moneyheist.form.SkillForm;
 import com.app.moneyheist.form.MemberSkillsForm;
-import com.app.moneyheist.model.Member;
+import com.app.moneyheist.form.SkillForm;
 import com.app.moneyheist.service.MemberService;
 import com.app.moneyheist.validator.MemberFormValidator;
 import org.springframework.stereotype.Component;
@@ -23,9 +22,7 @@ public class MemberFormValidatorImpl implements MemberFormValidator {
 
     @Override
     public void validateCreate(MemberForm form) {
-        Set<Member> members = memberService.getAll();
-
-        boolean isMemberCreated = members.stream().anyMatch(member -> member.getName().equals(form.getName()));
+        boolean isMemberCreated = memberService.getByName(form.getName()) != null;
 
         if (isMemberCreated)
             throw new MemberValidationException("Member with same name exists!");

@@ -1,25 +1,50 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from "react";
+import { Paper, ThemeProvider } from "@mui/material";
+import theme from "./utils/theme";
+import axios from "axios";
+import MemberList from "./components/member/MemberList";
 
 function App() {
+  const API = "http://localhost:8080/api";
+
+  const [members, setMembers] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    getAllMembers();
+  }, []);
+
+  const getAllMembers = async () => {
+    setLoading(true);
+    let cancel: any = null;
+
+    await axios
+      .get(API + "/members", {
+        cancelToken: new axios.CancelToken((ct) => {
+          cancel = ct;
+        }),
+      })
+      .then((res) => {        
+        setMembers(res.data);
+      })
+      .then(() => {
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
+    return () => {
+      cancel();
+    };
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ThemeProvider theme={theme}>
+      <Paper variant="outlined">
+        <MemberList members={members} isloading={loading}/>
+      </Paper>
+    </ThemeProvider>
   );
 }
 
